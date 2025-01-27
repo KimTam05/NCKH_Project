@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('user_account', function (Blueprint $table) {
             $table->id();
-            $table->bigint('user_type_id')->unsigned();
+            $table->unsignedBigInteger('user_type_id');
             $table->string('email');
             $table->string('password');
             $table->date('date_of_birth');
-            $table->bpchar('gender', 1);
-            $table->bpchar('is_active', 1);
+            $table->boolean('gender', 1);
+            $table->boolean('is_active', 1);
             $table->string('contact_number', 12);
             $table->text('user_image');
             $table->date('registration_date')->default(now());
-            $table->foreign('user_type_id')->references('user_type')->on('id');
+            $table->foreign('user_type_id')->references('id')->on('user_type');
         });
     }
 

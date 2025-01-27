@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('education_detail', function (Blueprint $table) {
-            $table->id('user_account_id');
+            $table->unsignedBigInteger('user_account_id')->primary();
             $table->string('certificate_degree_name', 50);
             $table->string('major', 50);
             $table->string('insitute_university_name', 50);
             $table->date('starting_date');
             $table->date('completion_date');
-            $table->int('percentage', 4);
+            $table->integer('percentage');
             $table->float('cgpa', 8);
-            $table->foreign('user_account_id')->references('user_account')->on('id');
+            $table->foreign('user_account_id')->references('user_account_id')->on('seeker_profile');
         });
     }
 
