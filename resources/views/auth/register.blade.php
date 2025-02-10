@@ -5,18 +5,9 @@
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 </head>
 <body>
-    <form action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('register', ['user_type_id' => $user_type_id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <label for="user_type_id">User Type:</label>
-        <select name="user_type_id" required>
-            @foreach($userTypes as $type)
-                <option value="{{ $type->id }}">{{ $type->user_type_name }}</option>
-            @endforeach
-        </select>
-        @error('user_type_id')
-            <div class="error">{{ $message }}</div>
-        @enderror
-
+        <input type="hidden" name="user_type_id" value="{{ $user_type_id->id }}">
         <label for="email">Email:</label>
         <input type="email" name="email" required>
         @error('email')

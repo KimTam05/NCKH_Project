@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+// Login and register routes
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+// Program User routes
+use App\Http\Controllers\JobPostController;
+use App\Http\Controllers\UserAccountController;
 
 
 /*
@@ -17,22 +23,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-// Login and register routes
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\LoginController;
-
-Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('register', [RegisterController::class, 'register']);
+Route::get('/user_type', [RegisterController::class, 'chooseUserType'])->name('user_type');
+Route::post('/user_type', [RegisterController::class, 'submitUserType']);
+Route::get('register/{user_type_id}', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('register/{user_type_id}', [RegisterController::class, 'register']);
 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-
-
-// Program User routes
-use App\Http\Controllers\JobPostController;
-use App\Http\Controllers\UserAccountController;
 
 // Trang danh sách việc làm
 Route::get('/jobs', [JobPostController::class, 'index'])->name('jobs.index');

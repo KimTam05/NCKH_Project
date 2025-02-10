@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\UserAccount;
+use Session;
+use Hash;
 
 class LoginController extends Controller
 {
@@ -19,9 +21,17 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required|string|min:6'
         ]);
+        $data = $request->only('email', 'password');
 
-        if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->route('home')->with('success', 'Login successful.');
+        $user_account = UserAccount::where('email', $request->email)->first();
+
+        if ($user_account) {
+            if ($user_account->is_active == 1) {
+                if(Hash::check($data['password'], $user_account->password)) {
+                    Session::put('user', $user_account->email);
+                    return redirect()->route('jobs.index')->with('success', 'Login successful.');
+                }
+            }
         }
 
         return back()->withErrors(['email' => 'Invalid credentials.'])->withInput();
@@ -29,7 +39,7 @@ class LoginController extends Controller
 
     public function logout()
     {
-        Auth::logout();
+        session()->forget('user');
         return redirect()->route('login')->with('success', 'Logout successful.');
     }
 }
