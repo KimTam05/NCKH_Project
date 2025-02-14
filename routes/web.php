@@ -48,3 +48,10 @@ Route::get('/logout', function() {
     // Logic đăng xuất
     return redirect()->route('jobs.index');
 })->name('logout');
+
+// Admin routes
+use App\Http\Controllers\JobController;
+use App\Http\Controllers\CandidateController;
+
+Route::resource('jobs', JobController::class);
+Route::resource('candidates', CandidateController::class);
