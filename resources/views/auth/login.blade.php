@@ -21,7 +21,7 @@
 
         <button type="submit">Login</button>
     </form>
-    <p>Don't have an account? <a href="{{ route('register') }}">Register here</a></p>
+    <p>Don't have an account? <a href="{{ route('user_type') }}">Register here</a></p>
     <script src="{{ asset('js/auth.js') }}"></script>
 </body>
 </html>

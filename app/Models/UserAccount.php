@@ -14,6 +14,11 @@ class UserAccount extends Model
     protected $fillable = [
         'name', 'email', 'password'
     ];
+    protected $hidden = [
+        'password'
+    ];
+
+    public $timestamps = false;
 
     public function jobPosts()
     {

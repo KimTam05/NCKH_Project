@@ -13,8 +13,13 @@
             <h1 class="logo">Recr.</h1>
             <ul class="menu">
                 <li><a href="{{ route('jobs.index') }}">Việc làm</a></li>
-                <li><a href="{{ route('profile.show') }}">Tài khoản</a></li>
-                <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
+                @if (Session::has('user'))
+                    <li><a href="{{ route('profile.show') }}">Tài khoản</a></li>
+                    <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
+                @else
+                    <li><a href="{{ route('login') }}">Đăng nhập</a></li>
+                    <li><a href="{{ route('register') }}">Đăng ký</a></li>
+                @endif
             </ul>
         </aside>
 

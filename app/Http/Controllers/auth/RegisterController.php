@@ -10,10 +10,19 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
-    public function showRegistrationForm()
+    public function chooseUserType(){
+        return view('auth.user_type');
+    }
+    public function submitUserType(Request $request){
+        $request->validate([
+            'user_type_id' => 'required'
+        ]);
+        return redirect()->route('register', ['user_type_id' => $request->user_type_id]);
+    }
+    public function showRegistrationForm($user_type_id)
     {
-        $userTypes = UserType::all();
-        return view('auth.register', compact('userTypes'));
+        $user_type_id = UserType::findOrFail($user_type_id);
+        return view('auth.register', compact('user_type_id'));
     }
 
     public function register(Request $request)
@@ -37,6 +46,7 @@ class RegisterController extends Controller
         $user->is_active = 1;
         $user->contact_number = $request->contact_number;
         $user->user_image = $request->file('user_image')->store('user_images', 'public');
+        $user->registration_date = now();
         $user->save();
 
         return redirect()->route('login')->with('success', 'Registration successful. Please login.');
