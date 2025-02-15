@@ -12,4 +12,6 @@ class UserType extends Model
     protected $table = 'user_type';
 
     protected $fillable = ['user_type_name'];
+
+    public $timestamps = false;
 }

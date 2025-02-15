@@ -20,6 +20,21 @@ class UserAccount extends Model
 
     public $timestamps = false;
 
+    public function userType()
+    {
+        return $this->belongsTo(UserType::class, 'user_type_id');
+    }
+
+    public function seekerProfiles()
+    {
+        return $this->hasOne(SeekerProfiles::class, 'user_account_id');
+    }
+
+    public function company()
+    {
+        return $this->hasOne(Company::class, 'user_account_id');
+    }
+
     public function jobPosts()
     {
         return $this->hasMany(JobPost::class, 'post_by_id');

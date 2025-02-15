@@ -28,7 +28,8 @@ class LoginController extends Controller
         if ($user_account) {
             if ($user_account->is_active == 1) {
                 if(Hash::check($data['password'], $user_account->password)) {
-                    Session::put('user', $user_account->email);
+                    Session::put('user_email', $user_account->email);
+                    Session::put('user_id', $user_account->id);
                     return redirect()->route('jobs.index')->with('success', 'Login successful.');
                 }
             }
@@ -39,7 +40,7 @@ class LoginController extends Controller
 
     public function logout()
     {
-        session()->forget('user');
+        session()->flush();
         return redirect()->route('login')->with('success', 'Logout successful.');
     }
 }
