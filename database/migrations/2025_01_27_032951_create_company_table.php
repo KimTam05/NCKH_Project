@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('profile_description');
             $table->date('establishment_date');
             $table->string('company_website_url');
-            $table->string('company_email');
+            $table->string('company_email')->unique();
             $table->foreign('id')->references('id')->on('user_account');
         });
     }

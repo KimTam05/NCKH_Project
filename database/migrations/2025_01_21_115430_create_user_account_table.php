@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user_account', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_type_id');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('password');
             $table->date('date_of_birth');
             $table->boolean('gender', 1);

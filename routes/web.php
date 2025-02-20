@@ -27,9 +27,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/user_type', [RegisterController::class, 'chooseUserType'])->name('user_type');
-Route::post('/user_type', [RegisterController::class, 'redirectRegister'])->name('redirect_register');
+Route::get('/user_type/job_seeker', [RegisterController::class, 'jobSeekerRegistration'])->name('job_seeker');
+Route::post('/user_type/job_seeker', [RegisterController::class, 'jobSeekerRegistrationSubmit']);
 
-Route::post('register/{user_type_id}', [RegisterController::class, 'register']);
+Route::get('/user_type/employer', [RegisterController::class, 'employerRegistration'])->name('employer');
 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);

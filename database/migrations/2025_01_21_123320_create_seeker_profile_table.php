@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_account_id')->primary();
             $table->string('first_name', 50);
             $table->string('last_name', 50);
-            $table->string('contact_email');
+            $table->string('contact_email')->unique();
             $table->string('contact_phone', 20);
             $table->text('file_cv')->nullable();
             $table->foreign('user_account_id')->references('id')->on('user_account');
