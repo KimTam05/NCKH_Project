@@ -1,26 +1,42 @@
-body {
-    font-family: Arial, sans-serif;
+/* Reset some default browser styles */
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
 }
 
 .container {
     display: flex;
     min-height: 100vh;
+    width: 100%;
 }
 
 .sidebar {
     width: 250px;
-    background: #fff;
+    background: #343a40;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    color: #fff;
 }
 
 .logo {
     font-size: 24px;
     font-weight: bold;
     color: #007bff;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .menu {
@@ -34,10 +50,11 @@ body {
 
 .menu a {
     text-decoration: none;
-    color: #333;
+    color: #adb5bd;
     display: block;
-    padding: 10px;
+    padding: 10px 15px;
     border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .menu a:hover {
@@ -45,7 +62,59 @@ body {
     color: #fff;
 }
 
+.menu a.active {
+    background: #007bff;
+    color: #fff;
+}
+
 .content {
     flex: 1;
+    padding: 40px;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+header .title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #343a40;
+}
+
+header .user-info {
+    display: flex;
+    align-items: center;
+}
+
+header .user-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+header .user-info .username {
+    font-size: 16px;
+    color: #343a40;
+}
+
+main {
+    background: #fff;
     padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #adb5bd;
 }
