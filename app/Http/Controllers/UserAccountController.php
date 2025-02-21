@@ -33,18 +33,4 @@ class UserAccountController extends Controller
         return view('profile.edit');
     }
 
-    public function update($user_id, Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'contact_number' => 'required',
-            'experience' => 'required|numeric',
-        ]);
-
-        $user = UserAccount::where('id', $user_id)->first();
-        $user->fill($request->all());
-        $user->save();
-
-        return redirect()->route('profile.show', $user_id);
-    }
 }
