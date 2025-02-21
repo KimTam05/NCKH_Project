@@ -10,11 +10,10 @@
 </head>
 <body>
     <h1>Bạn có phải là:</h1>
-    <form action="" class="d-flex gap-2" method="post">
-        @csrf
-        <button type="submit" class="btn btn-outline-primary" name="user_type_id" value="0">Nhà tuyển dụng</button>
-        <button type="submit" class="btn btn-outline-danger" name="user_type_id"  value="1">Người kiếm việc</button>
-    </form>
+    <div class="d-flex">
+        <a href="{{ route('job_seeker') }}" class="btn btn-outline-primary me-2">Người kiếm việc</a>
+        <a href="{{ route('employer') }}" class="btn btn-outline-info">Nhà tuyển dụng</a>
+    </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </html>

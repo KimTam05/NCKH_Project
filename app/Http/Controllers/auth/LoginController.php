@@ -19,28 +19,32 @@ class LoginController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|string|min:6'
+            'password' => 'required|string|min:6',
         ]);
         $data = $request->only('email', 'password');
 
         $user_account = UserAccount::where('email', $request->email)->first();
 
         if ($user_account) {
-            if ($user_account->is_active == 1) {
+            if ($user_account->is_active != 1) {
+                return back()->withErrors(['account' => 'Tài khoản đang bị khoá!']);
+            }
+            else{
                 if(Hash::check($data['password'], $user_account->password)) {
                     Session::put('user_email', $user_account->email);
-                    Session::put('user_id', $user_account->id);
-                    return redirect()->route('jobs.index')->with('success', 'Login successful.');
+                    Session::put('profile_url', $user_account->profile_url);
+                    return redirect()->route('jobs.index');
                 }
             }
         }
 
-        return back()->withErrors(['email' => 'Invalid credentials.'])->withInput();
+        return back()->withErrors(['account' => 'Tài khoản hoặc mật khẩu sai!']);
     }
 
     public function logout()
     {
-        session()->flush();
-        return redirect()->route('login')->with('success', 'Logout successful.');
+        Session::forget('user_email');
+        Session::forget('profile_url');
+        return redirect()->route('login');
     }
 }

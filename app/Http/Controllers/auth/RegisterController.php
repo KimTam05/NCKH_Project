@@ -10,107 +10,148 @@ use App\Models\Company;
 use App\Models\Company_image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
     public function chooseUserType(){
         return view('auth.user_type');
     }
-    public function redirectRegister(Request $request){
+
+    public function jobSeekerRegistration(){
+        return view('auth.jobseeker-registartion-form');
+    }
+
+    public function jobSeekerRegistrationSubmit(Request $request){
         $request->validate([
-            'user_type_id' => 'required'
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'gender' => 'required',
+            'date_of_birth' => 'required',
+            'user_image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
+            'email' => 'required|email',
+            'contact_number' => 'required',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+            ],
+            'password_confirmation' => 'required|same:password',
         ]);
-        $user_type_id = $request->user_type_id;
-        if($user_type_id == 1){
-            return view('auth.jobseeker-registartion-form', compact('user_type_id'));
+        $request->merge([
+            'user_type_id' => 1,
+            'is_active' => 1,
+            'registration_date' => now(),
+        ]);
+        $folder = 'uploads/job_seekers';
+        $data = $request->all();
+
+        if($request->hasFile('user_image')){
+            $image = $request->file('user_image');
+            $path = public_path($folder);
+            $imageName = time().'_'.$data['first_name'].$data['last_name'].'.'.$image->getClientOriginalExtension();
+            $image->move($path, $imageName);
+            $imagePath = $folder . '/' .$imageName;
         }
-        else if($user_type_id == 0){
-            return view('auth.employer-registartion-form', compact('user_type_id'));
-        }
+
+        do{
+            $profile_url = Str::random(40);
+        } while(UserAccount::where('profile_url', $profile_url)->exists());
+
+        $userAccount = new UserAccount();
+        $userAccount->user_type_id = $data['user_type_id'];
+        $userAccount->email = $data['email'];
+        $userAccount->user_image = $imagePath;
+        $userAccount->password = Hash::make($data['password']);
+        $userAccount->date_of_birth = $data['date_of_birth'];
+        $userAccount->gender = $data['gender'];
+        $userAccount->is_active = $data['is_active'];
+        $userAccount->contact_number = $data['contact_number'];
+        $userAccount->registration_date = $data['registration_date'];
+        $userAccount->profile_url = $profile_url;
+        $userAccount->save();
+
+        $jobSeeker = new SeekerProfiles();
+        $jobSeeker->user_account_id = $userAccount->id;
+        $jobSeeker->first_name = $request->first_name;
+        $jobSeeker->last_name = $request->last_name;
+        $jobSeeker->contact_email = $request->email;
+        $jobSeeker->contact_phone = $request->contact_number;
+        $jobSeeker->save();
+
+        return redirect()->route('jobs.index');
     }
 
-    public function register(Request $request, $user_type_id){
-        if($user_type_id == 1){
-            $request->validate([
-                'user_type_id' => 'required',
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'gender' => 'required',
-                'date_of_birth' => 'required',
-                'email' => 'required|email',
-                'contact_number' => 'required',
-                'password' => 'required',
-                'password_confirmation' => 'required|same:password',
-            ]);
-            $request->merge([
-                'is_active' => 1,
-                'registration_date' => now(),
-            ]);
-
-            $userAccount = new UserAccount();
-            $userAccount->user_type_id = $user_type_id;
-            $userAccount->email = $request->email;
-            $userAccount->password = Hash::make($request->password);
-            $userAccount->date_of_birth = $request->date_of_birth;
-            $userAccount->gender = $request->gender;
-            $userAccount->is_active = $request->is_active;
-            $userAccount->contact_number = $request->contact_number;
-            $userAccount->user_image = $request->user_image;
-            $userAccount->registration_date = $request->registration_date;
-            $userAccount->save();
-
-            $jobSeeker = new SeekerProfiles();
-            $jobSeeker->user_account_id = $userAccount->id;
-            $jobSeeker->first_name = $request->first_name;
-            $jobSeeker->last_name = $request->last_name;
-            $jobSeeker->contact_email = $request->email;
-            $jobSeeker->contact_phone = $request->contact_number;
-            $jobSeeker->save();
-
-            return redirect()->route('jobs.index');
-        }
-        else if($user_type_id == 0){
-            $request->validate([
-                'user_type_id' => 'required',
-                'company_name' => 'required',
-                'company_email' => 'required|email',
-                'company_website_url' => 'required',
-                'profile_description' => 'required',
-                'establishment_date' => 'required',
-                'password' => 'required',
-                'password_confirmation' => 'required|same:password',
-            ]);
-            $request->merge([
-                'is_active' => 1,
-                'registration_date' => now(),
-            ]);
-
-            $userAccount = new UserAccount();
-            $userAccount->user_type_id = $user_type_id;
-            $userAccount->email = $request->company_email;
-            $userAccount->password = Hash::make($request->password);
-            $userAccount->is_active = $request->is_active;
-            $userAccount->registration_date = $request->registration_date;
-            $userAccount->date_of_birth = $request->establishment_date;
-            $userAccount->user_image = $request->company_image_url;
-            $userAccount->save();
-
-            $Company = new Company();
-            $Company->id = $userAccount->id;
-            $Company->company_name = $request->company_name;
-            $Company->company_image_url = $request->company_image_url;
-            $Company->company_email = $request->company_email;
-            $Company->company_website_url = $request->company_website_url;
-            $Company->profile_description = $request->profile_description;
-            $Company->establishment_date = $request->establishment_date;
-            $Company->save();
-
-            $Company_image = new Company_image();
-            $Company_image->company_id = $Company->id;
-            $Company_image->company_image_url = $request->company_image_url;
-            $Company_image->save();
-
-            return redirect()->route('jobs.index');
-        }
+    public function employerRegistration(){
+        return view('auth.employer-registartion-form');
     }
+
+    public function employerRegistrationSubmit(Request $request){
+        $request->validate([
+            'company_name' => 'required',
+            'company_email' => 'required|email',
+            'company_website_url' => 'required',
+            'establishment_date' => 'required',
+            'company_image_url' => 'image|mimes:jpeg,jpg,png|max:2048',
+            'contact_number' => 'required',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+            ],
+            'password_confirmation' => 'required|same:password',
+        ]);
+        $request->merge([
+            'user_type_id' => 2,
+            'is_active' => 1,
+            'registration_date' => now(),
+        ]);
+
+        $data = $request->all();
+        $folder = 'uploads/employers';
+
+        if($request->hasFile('company_image_url')){
+            $image = $request->file('company_image_url');
+            $path = public_path($folder);
+            $imageName = time().'_'.$data['company_name'].'.'.$image->getClientOriginalExtension();
+            $image->move($path, $imageName);
+            $imagePath = $folder . '/' .$imageName;
+        }
+
+        do{
+            $profile_url = Str::random(40);
+        } while(UserAccount::where('profile_url', $profile_url)->exists());
+
+        $userAccount = new UserAccount();
+        $userAccount->user_type_id = $data['user_type_id'];
+        $userAccount->email = $data['company_email'];
+        $userAccount->gender = 2;
+        $userAccount->password = Hash::make($data['password']);
+        $userAccount->is_active = $data['is_active'];
+        $userAccount->contact_number = $data['contact_number'];
+        $userAccount->registration_date = $data['registration_date'];
+        $userAccount->date_of_birth = $data['establishment_date'];
+        $userAccount->user_image = $imagePath;
+        $userAccount->profile_url = $profile_url;
+        $userAccount->save();
+
+        $Company = new Company();
+        $Company->id = $userAccount->id;
+        $Company->company_name = $data['company_name'];
+        $Company->company_email = $data['company_email'];
+        $Company->company_website_url = $data['company_website_url'];
+        $Company->profile_description = " ";
+        $Company->establishment_date = $data['establishment_date'];
+        $Company->save();
+
+        $Company_id = Company::where('company_email', $data['company_email'])->first();
+
+        Company_image::create([
+            'company_id' => $Company_id->id,
+            'company_image_url' => $imagePath,
+        ]);
+
+        return redirect()->route('jobs.index');
+    }
+
 }

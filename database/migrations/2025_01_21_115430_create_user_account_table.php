@@ -14,13 +14,14 @@ return new class extends Migration
         Schema::create('user_account', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_type_id');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('password');
             $table->date('date_of_birth');
             $table->boolean('gender', 1);
             $table->boolean('is_active', 1);
             $table->string('contact_number', 12);
             $table->text('user_image');
+            $table->string('profile_url')->unique();
             $table->date('registration_date')->default(now());
             $table->foreign('user_type_id')->references('id')->on('user_type');
         });

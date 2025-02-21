@@ -8,10 +8,8 @@
     <title>JobSeeker Registration</title>
 </head>
 <body>
-    <form action="{{  route('register', ['user_type_id' => $user_type_id]) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('job_seeker_submit') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('POST')
-        <input type="hidden" name="user_type_id" value="1">
         <div class="form-group">
             <label for="first-name">First Name:</label>
             <input type="text" name="first_name" required>
@@ -36,8 +34,9 @@
         <div class="form-group">
             <label for="gender">Gender:</label>
             <select name="gender" required>
-                <option value="1">Male</option>
-                <option value="0">Female</option>
+                <option selected disabled>--chọn giới tính--</option>
+                <option value="1">Nam</option>
+                <option value="0">Nữ</option>
             </select>
         </div>
         <div class="form-group">

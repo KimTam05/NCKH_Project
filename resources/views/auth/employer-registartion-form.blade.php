@@ -9,14 +9,12 @@
 <body>
 
     <div class="container">
-        <form action="{{  route('register', ['user_type_id' => $user_type_id]) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{  route('employer_submit') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            @method('POST')
-            <input type="hidden" name="user_type_id" value="0">
             <div class="form-group">
                 <label for="company-logo">Company Logo:</label>
-                <input type="file" name="company_image-url" required>
-                @error('company_image-url')
+                <input type="file" name="company_image_url" required>
+                @error('company_image_url')
                     <div>{{ $message }}</div>
                 @enderror
             </div>
@@ -44,11 +42,20 @@
 
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" name="email" required>
+                <input type="email" name="company_email" required>
                 @error('email')
                     <div>{{ $message }}</div>
                 @enderror
             </div>
+
+            <div class="form-group">
+                <label for="contact-number">Contact Number:</label>
+                <input type="text" name="contact_number" required>
+                @error('contact_number')
+                    <div>{{ $message }}</div>
+                @enderror
+            </div>
+
             <div class="form-group">
                 <label for="password">Password:</label>
                 <input type="password" name="password" required>

@@ -9,19 +9,15 @@
         @csrf
         <label for="email">Email:</label>
         <input type="email" name="email" required>
-        @error('email')
-            <div class="error">{{ $message }}</div>
-        @enderror
-
-        <label for="password">Password:</label>
+        <label for="password">Mật khẩu:</label>
         <input type="password" name="password" required>
-        @error('password')
+        @error('account')
             <div class="error">{{ $message }}</div>
         @enderror
 
-        <button type="submit">Login</button>
+        <button type="submit">Đăng nhập</button>
     </form>
-    <p>Don't have an account? <a href="{{ route('user_type') }}">Register here</a></p>
+    <p>Chưa có tài khoản? <a href="{{ route('user_type') }}">Đăng ký</a></p>
     <script src="{{ asset('js/auth.js') }}"></script>
 </body>
 </html>

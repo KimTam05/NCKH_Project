@@ -27,9 +27,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/user_type', [RegisterController::class, 'chooseUserType'])->name('user_type');
-Route::post('/user_type', [RegisterController::class, 'redirectRegister'])->name('redirect_register');
+Route::get('/user_type/job_seeker', [RegisterController::class, 'jobSeekerRegistration'])->name('job_seeker');
+Route::post('/user_type/job_seeker', [RegisterController::class, 'jobSeekerRegistrationSubmit'])->name('job_seeker_submit');
 
-Route::post('register/{user_type_id}', [RegisterController::class, 'register']);
+Route::get('/user_type/employer', [RegisterController::class, 'employerRegistration'])->name('employer');
+Route::post('/user_type/employer', [RegisterController::class, 'employerRegistrationSubmit'])->name('employer_submit');
 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
@@ -40,13 +42,13 @@ Route::get('/jobs', [JobPostController::class, 'index'])->name('jobs.index');
 Route::get('/jobs/{id}', [JobPostController::class, 'show'])->name('jobs.show');
 
 // Trang hồ sơ cá nhân
-Route::get('/profile/{user_id}', [UserAccountController::class, 'show'])->name('profile.show');
-Route::get('/profile/edit/{user_id}', [UserAccountController::class, 'edit'])->name('profile.edit');
-Route::post('/profile/update/{user_id}', [UserAccountController::class, 'update'])->name('profile.update');
+Route::get('/profile/{profile_url}', [UserAccountController::class, 'show'])->name('profile.show');
+Route::get('/profile/edit/{profile_url}', [UserAccountController::class, 'edit'])->name('profile.edit');
+Route::post('/profile/edit/{profile_url}', [UserAccountController::class, 'update'])->name('profile.update');
 
 // Đăng xuất
 Route::get('/logout', function() {
-    // Logic đăng xuất
+    // API đăng xuất
     return redirect()->route('jobs.index');
 })->name('logout');
 
