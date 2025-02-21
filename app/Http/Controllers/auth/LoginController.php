@@ -32,7 +32,7 @@ class LoginController extends Controller
             else{
                 if(Hash::check($data['password'], $user_account->password)) {
                     Session::put('user_email', $user_account->email);
-                    Session::put('user_id', $user_account->id);
+                    Session::put('profile_url', $user_account->profile_url);
                     return redirect()->route('jobs.index');
                 }
             }
@@ -43,7 +43,8 @@ class LoginController extends Controller
 
     public function logout()
     {
-        session()->flush();
+        Session::forget('user_email');
+        Session::forget('profile_url');
         return redirect()->route('login');
     }
 }

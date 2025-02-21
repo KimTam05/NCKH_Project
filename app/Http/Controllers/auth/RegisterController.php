@@ -10,6 +10,7 @@ use App\Models\Company;
 use App\Models\Company_image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -53,6 +54,10 @@ class RegisterController extends Controller
             $imagePath = $folder . '/' .$imageName;
         }
 
+        do{
+            $profile_url = Str::random(40);
+        } while(UserAccount::where('profile_url', $profile_url)->exists());
+
         $userAccount = new UserAccount();
         $userAccount->user_type_id = $data['user_type_id'];
         $userAccount->email = $data['email'];
@@ -63,6 +68,7 @@ class RegisterController extends Controller
         $userAccount->is_active = $data['is_active'];
         $userAccount->contact_number = $data['contact_number'];
         $userAccount->registration_date = $data['registration_date'];
+        $userAccount->profile_url = $profile_url;
         $userAccount->save();
 
         $jobSeeker = new SeekerProfiles();
@@ -112,6 +118,10 @@ class RegisterController extends Controller
             $imagePath = $folder . '/' .$imageName;
         }
 
+        do{
+            $profile_url = Str::random(40);
+        } while(UserAccount::where('profile_url', $profile_url)->exists());
+
         $userAccount = new UserAccount();
         $userAccount->user_type_id = $data['user_type_id'];
         $userAccount->email = $data['company_email'];
@@ -122,6 +132,7 @@ class RegisterController extends Controller
         $userAccount->registration_date = $data['registration_date'];
         $userAccount->date_of_birth = $data['establishment_date'];
         $userAccount->user_image = $imagePath;
+        $userAccount->profile_url = $profile_url;
         $userAccount->save();
 
         $Company = new Company();
