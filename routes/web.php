@@ -28,9 +28,10 @@ Route::get('/', function () {
 });
 Route::get('/user_type', [RegisterController::class, 'chooseUserType'])->name('user_type');
 Route::get('/user_type/job_seeker', [RegisterController::class, 'jobSeekerRegistration'])->name('job_seeker');
-Route::post('/user_type/job_seeker', [RegisterController::class, 'jobSeekerRegistrationSubmit']);
+Route::post('/user_type/job_seeker', [RegisterController::class, 'jobSeekerRegistrationSubmit'])->name('job_seeker_submit');
 
 Route::get('/user_type/employer', [RegisterController::class, 'employerRegistration'])->name('employer');
+Route::post('/user_type/employer', [RegisterController::class, 'employerRegistrationSubmit'])->name('employer_submit');
 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
@@ -47,7 +48,7 @@ Route::post('/profile/update/{user_id}', [UserAccountController::class, 'update'
 
 // Đăng xuất
 Route::get('/logout', function() {
-    // Logic đăng xuất
+    // API đăng xuất
     return redirect()->route('jobs.index');
 })->name('logout');
 
