@@ -27,7 +27,7 @@ class LoginController extends Controller
 
         if ($user_account) {
             if ($user_account->is_active != 1) {
-                return back()->withErrors(['account' => 'Tài khoản đang bị khoá!']);
+                return back()->with(['account' => 'Tài khoản đang bị khoá!']);
             }
             else{
                 if(Hash::check($data['password'], $user_account->password)) {
@@ -38,7 +38,7 @@ class LoginController extends Controller
             }
         }
 
-        return back()->withErrors(['account' => 'Tài khoản hoặc mật khẩu sai!']);
+        return back()->with(['account' => 'Email hoặc mật khẩu không đúng!']);
     }
 
     public function logout()

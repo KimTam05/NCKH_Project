@@ -79,7 +79,7 @@ class RegisterController extends Controller
         $jobSeeker->contact_phone = $request->contact_number;
         $jobSeeker->save();
 
-        return redirect()->route('jobs.index');
+        return redirect()->route('login')->with('success', 'Đăng ký thành công!');
     }
 
     public function employerRegistration(){
@@ -151,7 +151,7 @@ class RegisterController extends Controller
             'company_image_url' => $imagePath,
         ]);
 
-        return redirect()->route('jobs.index');
+        return redirect()->route('login')->with('success', 'Đăng ký thành công!');
     }
 
 }
