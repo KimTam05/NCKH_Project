@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="">
     <title>JobSeeker Registration</title>
+    <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 </head>
 <body>
     <form action="{{ route('job_seeker_submit') }}" method="POST" enctype="multipart/form-data">
