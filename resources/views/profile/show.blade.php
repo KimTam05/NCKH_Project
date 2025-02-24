@@ -20,7 +20,7 @@
         </div>
         <div class="col-sm-4">
             <p><strong>Số điện thoại:</strong> {{ $user_data->contact_number }}</p>
-            <p><strong>Giới tính: </strong> {{ $user_profile->gender == 1 ? 'Nam' : 'Nữ' }}</p>
+            <p><strong>Giới tính: </strong> {{ $user_profile->gender == 0 ? 'Nam' : 'Nữ' }}</p>
         </div>
         <div class="col-sm-4">
             <p><strong>Ngày sinh: </strong> {{ $user_data->date_of_birth }} </p>
