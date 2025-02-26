@@ -27,10 +27,16 @@ class UserAccountController extends Controller
         return view('profile.show', compact('user_data', 'user_profile'));
     }
 
-    public function edit($user_id)
+    public function edit($profile_url)
     {
-        $user_data = UserAccount::where('id', $user_id)->first();
-        return view('profile.edit');
+        $user_data = UserAccount::where('profile_url', $profile_url)->first();
+        if(Session::get('user_type_id') == 1){
+            return view('profile.job_seeker_edit', compact('user_data'));
+        }
+        else if(Session::get('user_type_id') == 2){
+            return view('profile.employer_edit', compact('user_data'));
+        }
+
     }
 
 }

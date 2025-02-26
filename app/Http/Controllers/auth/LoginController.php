@@ -29,22 +29,26 @@ class LoginController extends Controller
             if ($user_account->is_active != 1) {
                 return back()->with(['account' => 'Tài khoản đang bị khoá!']);
             }
-            else{
-                if(Hash::check($data['password'], $user_account->password)) {
-                    Session::put('user_email', $user_account->email);
-                    Session::put('profile_url', $user_account->profile_url);
-                    return redirect()->route('jobs.index');
-                }
+            elseif(Hash::check($data['password'], $user_account->password)){
+                return back()->with(['account' => 'Tài khoản hoặc mật khẩu không đúng!']);
             }
-        }
+            else{
+                $request->session()->put([
+                        'user_email' => $user_account->email,
+                        'profile_url' => $user_account->profile_url,
+                        'user_type_id' => $user_account->user_type_id,
+                    ]);
+                // Security Session
+                $request->session()->regenerate();
 
-        return back()->with(['account' => 'Email hoặc mật khẩu không đúng!']);
+                return redirect()->route('jobs.index');
+                }
+        }
     }
 
     public function logout()
     {
-        Session::forget('user_email');
-        Session::forget('profile_url');
+        session()->flush();
         return redirect()->route('login');
     }
 }

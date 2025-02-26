@@ -26,6 +26,12 @@
             <p><strong>Ngày sinh: </strong> {{ $user_data->date_of_birth }} </p>
         </div>
     </div>
-    <!-- Thêm học vấn và kinh nghiệm làm việc bên dưới này -->
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4 text-center">
+            <a href="{{ route('profile.edit', $user_data->profile_url) }}" class="btn btn-outline-primary"><i class="fa-solid fa-note-sticky"></i> Chỉnh sửa</a>
+        </div>
+        <div class="col-sm-4"></div>
+    </div>
 </div>
 @endsection

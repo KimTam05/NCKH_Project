@@ -4,6 +4,13 @@
     <title>Login</title>
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+          height: 100vh;
+          margin: 0;
+          background: radial-gradient(circle, rgba(230, 0, 255, 0.944), rgba(0, 81, 255, 0.905));
+        }
+    </style>
 </head>
 <body>
     <form action="{{ route('login') }}" method="POST">
@@ -18,7 +25,7 @@
 
         <button type="submit">Đăng nhập</button>
     </form>
-    <p>Chưa có tài khoản? <a href="{{ route('user_type') }}">Đăng ký</a></p>
+    <p style="color: white;">Chưa có tài khoản? <a href="{{ route('user_type') }}">Đăng ký</a></p>
     <script src="{{ asset('js/auth.js') }}"></script>
     @if (session('success'))
         <script>

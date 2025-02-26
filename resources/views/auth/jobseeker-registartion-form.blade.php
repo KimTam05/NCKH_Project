@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="">
     <title>JobSeeker Registration</title>
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+    <style>
+        body {
+          height: 100vh;
+          margin: 0;
+          background: radial-gradient(circle, rgba(230, 0, 255, 0.944), rgba(0, 81, 255, 0.905));
+        }
+    </style>
 </head>
 <body>
     <form action="{{ route('job_seeker_submit') }}" method="POST" enctype="multipart/form-data">
