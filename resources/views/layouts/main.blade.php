@@ -26,11 +26,11 @@
         <div class="row">
             <div class="col-sm-2 bg-white rounded-2">
                 <ul class="menu">
-                    <li><a class="text-black" href="{{ route('jobs.index') }}">Việc làm</a></li>
+                    <li><a style="transition: all 0.3s ease-in-out;" href="{{ route('jobs.index') }}">Việc làm</a></li>
                     @if (session()->has('profile_url'))
-                        <li><a class="text-black" href="{{ route('profile.show', ['profile_url' => session()->get('profile_url')])}}">Tài khoản</a></li>
+                        <li><a href="{{ route('profile.show', ['profile_url' => session()->get('profile_url')])}}">Tài khoản</a></li>
                         <li>
-                            <a href="#" class="text-black" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 Đăng xuất
                             </a>
                         </li>
@@ -38,8 +38,8 @@
                             @csrf
                         </form>
                     @else
-                        <li><a class="text-black" href="{{ route('login') }}">Đăng nhập</a></li>
-                        <li><a class="text-black" href="{{ route('user_type') }}">Đăng ký</a></li>
+                        <li><a href="{{ route('login') }}">Đăng nhập</a></li>
+                        <li><a href="{{ route('user_type') }}">Đăng ký</a></li>
                     @endif
 
                 </ul>

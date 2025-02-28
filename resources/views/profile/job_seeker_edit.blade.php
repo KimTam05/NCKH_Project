@@ -11,6 +11,6 @@
         <label for="name">First Name:</label>
         <input type="text" class="form-control" id="" name="name" value="{{ $user_data->name }}" required>
     </div>
-    <div class="form-group">
+    
 </form>
 @endsection

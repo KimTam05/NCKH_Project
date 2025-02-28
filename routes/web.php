@@ -23,9 +23,6 @@ use App\Http\Controllers\CandidateController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 Route::get('/user_type', [RegisterController::class, 'chooseUserType'])->name('user_type');
 Route::get('/user_type/job_seeker', [RegisterController::class, 'jobSeekerRegistration'])->name('job_seeker');
 Route::post('/user_type/job_seeker', [RegisterController::class, 'jobSeekerRegistrationSubmit'])->name('job_seeker_submit');
@@ -38,7 +35,7 @@ Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 // Trang danh sách việc làm
-Route::get('/jobs', [JobPostController::class, 'index'])->name('jobs.index');
+Route::get('/', [JobPostController::class, 'index'])->name('jobs.index');
 Route::get('/jobs/{id}', [JobPostController::class, 'show'])->name('jobs.show');
 
 // Trang hồ sơ cá nhân
