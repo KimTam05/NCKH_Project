@@ -11,7 +11,6 @@ use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\CandidateController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
