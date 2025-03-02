@@ -11,7 +11,6 @@ use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\CandidateController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,7 +24,8 @@ use App\Http\Controllers\CandidateController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
+
 Route::get('/user_type', [RegisterController::class, 'chooseUserType'])->name('user_type');
 Route::get('/user_type/job_seeker', [RegisterController::class, 'jobSeekerRegistration'])->name('job_seeker');
 Route::post('/user_type/job_seeker', [RegisterController::class, 'jobSeekerRegistrationSubmit'])->name('job_seeker_submit');
