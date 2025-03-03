@@ -58,6 +58,14 @@ class RegisterController extends Controller
             $profile_url = Str::random(40);
         } while(UserAccount::where('profile_url', $profile_url)->exists());
 
+        $mail = UserAccount::findOrFail($request->email);
+        $phone = UserAccount::findOrFail($request->phone);
+        if($mail != $request->email){
+            return redirect()->back()->with('error', 'Email đã tồn tại!');
+        }
+        if($phone != $request->phone){
+            return redirect()->back()->with('error', 'SDT đã tồn tại!');
+        }
         $userAccount = new UserAccount();
         $userAccount->user_type_id = $data['user_type_id'];
         $userAccount->email = $data['email'];
@@ -121,6 +129,16 @@ class RegisterController extends Controller
         do{
             $profile_url = Str::random(40);
         } while(UserAccount::where('profile_url', $profile_url)->exists());
+
+        $mail = UserAccount::findOrFail($request->email);
+        $phone = UserAccount::findOrFail($request->phone);
+        if($mail != $request->email){
+            return redirect()->back()->with('error', 'Email đã tồn tại!');
+        }
+        if($phone != $request->phone){
+            return redirect()->back()->with('error', 'SDT đã tồn tại!');
+        }
+
 
         $userAccount = new UserAccount();
         $userAccount->user_type_id = $data['user_type_id'];
