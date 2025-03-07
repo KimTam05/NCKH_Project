@@ -38,7 +38,7 @@
                 <ul class="menu">
                     <li><a href="{{ route('jobs.index') }}">Việc làm</a></li>
                     @if (session()->has('profile_url'))
-                        <li><a class="text-black" href="{{ route('profile.show', ['profile_url' => session()->get('profile_url')])}}">Tài khoản</a></li>
+                        <li><a href="{{ route('profile.show', ['profile_url' => session()->get('profile_url')])}}">Tài khoản</a></li>
                         <li>
                             <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 Đăng xuất

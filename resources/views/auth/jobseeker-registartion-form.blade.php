@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="">
     <title>JobSeeker Registration</title>
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+    {{--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>  --}}
     <style>
         body {
           height: 100vh;
@@ -36,6 +38,13 @@
             <label for="date-of-birth">Birthday:</label>
             <input type="date" name="date_of_birth" required>
             @error('date_of_birth')
+                <div>{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="address">Address:</label>
+            <input type="text" name="address" required>
+            @error('address')
                 <div>{{ $message }}</div>
             @enderror
         </div>

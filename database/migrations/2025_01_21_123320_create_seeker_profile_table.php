@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('seeker_profile', function (Blueprint $table) {
             $table->unsignedBigInteger('user_account_id')->primary();
-            $table->string('first_name', 50);
-            $table->string('last_name', 50);
+            $table->string('name');
             $table->string('contact_email')->unique();
             $table->string('contact_phone', 20);
             $table->text('file_cv')->nullable();

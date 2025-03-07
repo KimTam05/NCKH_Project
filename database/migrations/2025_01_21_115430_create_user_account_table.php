@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('gender', 1);
             $table->boolean('is_active', 1);
             $table->string('contact_number', 12);
+            $table->string('address')->candidate();
             $table->text('user_image');
             $table->string('profile_url')->unique();
             $table->date('registration_date')->default(now());

@@ -23,11 +23,21 @@ class RegisterController extends Controller
     }
 
     public function jobSeekerRegistrationSubmit(Request $request){
+        $mail = UserAccount::findOrFail($request->email);
+        $phone = UserAccount::findOrFail($request->phone);
+        if($mail == $request->email){
+            return redirect()->back()->with('error', 'Email đã tồn tại!');
+        }
+        if($phone == $request->phone){
+            return redirect()->back()->with('error', 'SDT đã tồn tại!');
+        }
+
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
             'gender' => 'required',
             'date_of_birth' => 'required',
+            'address' => 'required',
             'user_image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
             'email' => 'required|email',
             'contact_number' => 'required',
@@ -46,6 +56,10 @@ class RegisterController extends Controller
         $folder = 'uploads/job_seekers';
         $data = $request->all();
 
+        do{
+            $profile_url = Str::random(40);
+        } while(UserAccount::where('profile_url', $profile_url)->exists());
+
         if($request->hasFile('user_image')){
             $image = $request->file('user_image');
             $path = public_path($folder);
@@ -53,23 +67,11 @@ class RegisterController extends Controller
             $image->move($path, $imageName);
             $imagePath = $folder . '/' .$imageName;
         }
-
-        do{
-            $profile_url = Str::random(40);
-        } while(UserAccount::where('profile_url', $profile_url)->exists());
-
-        $mail = UserAccount::findOrFail($request->email);
-        $phone = UserAccount::findOrFail($request->phone);
-        if($mail != $request->email){
-            return redirect()->back()->with('error', 'Email đã tồn tại!');
-        }
-        if($phone != $request->phone){
-            return redirect()->back()->with('error', 'SDT đã tồn tại!');
-        }
         $userAccount = new UserAccount();
         $userAccount->user_type_id = $data['user_type_id'];
         $userAccount->email = $data['email'];
         $userAccount->user_image = $imagePath;
+        $userAccount->address = $data['address'];
         $userAccount->password = Hash::make($data['password']);
         $userAccount->date_of_birth = $data['date_of_birth'];
         $userAccount->gender = $data['gender'];
@@ -118,14 +120,6 @@ class RegisterController extends Controller
         $data = $request->all();
         $folder = 'uploads/employers';
 
-        if($request->hasFile('company_image_url')){
-            $image = $request->file('company_image_url');
-            $path = public_path($folder);
-            $imageName = time().'_'.$data['company_name'].'.'.$image->getClientOriginalExtension();
-            $image->move($path, $imageName);
-            $imagePath = $folder . '/' .$imageName;
-        }
-
         do{
             $profile_url = Str::random(40);
         } while(UserAccount::where('profile_url', $profile_url)->exists());
@@ -139,6 +133,13 @@ class RegisterController extends Controller
             return redirect()->back()->with('error', 'SDT đã tồn tại!');
         }
 
+        if($request->hasFile('company_image_url')){
+            $image = $request->file('company_image_url');
+            $path = public_path($folder);
+            $imageName = time().'_'.$data['company_name'].'.'.$image->getClientOriginalExtension();
+            $image->move($path, $imageName);
+            $imagePath = $folder . '/' .$imageName;
+        }
 
         $userAccount = new UserAccount();
         $userAccount->user_type_id = $data['user_type_id'];
