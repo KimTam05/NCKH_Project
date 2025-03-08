@@ -29,9 +29,9 @@ Route::post('/user_type/job_seeker', [RegisterController::class, 'jobSeekerRegis
 Route::get('/user_type/employer', [RegisterController::class, 'employerRegistration'])->name('employer');
 Route::post('/user_type/employer', [RegisterController::class, 'employerRegistrationSubmit'])->name('employer_submit');
 
-Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [LoginController::class, 'login']);
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Trang danh sách việc làm
 Route::get('/', [JobPostController::class, 'index'])->name('jobs.index');

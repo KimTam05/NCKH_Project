@@ -23,22 +23,23 @@ class RegisterController extends Controller
     }
 
     public function jobSeekerRegistrationSubmit(Request $request){
-        $mail = UserAccount::findOrFail($request->email);
-        $phone = UserAccount::findOrFail($request->phone);
-        if($mail == $request->email){
+        // Kiểm tra email và số điện thoại có tồn tại trong cơ sở dữ liệu hay không
+        $mail = UserAccount::where('email', $request->email)->first();
+        $phone = UserAccount::where('contact_number', $request->contact_number)->first();
+
+        if ($mail) {
             return redirect()->back()->with('error', 'Email đã tồn tại!');
         }
-        if($phone == $request->phone){
-            return redirect()->back()->with('error', 'SDT đã tồn tại!');
+
+        if ($phone) {
+            return redirect()->back()->with('error', 'Số điện thoại đã tồn tại!');
         }
 
         $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'name' => 'required',
             'gender' => 'required',
             'date_of_birth' => 'required',
-            'address' => 'required',
-            'user_image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
+            'user_image' => 'required',
             'email' => 'required|email',
             'contact_number' => 'required',
             'password' => [
@@ -60,10 +61,11 @@ class RegisterController extends Controller
             $profile_url = Str::random(40);
         } while(UserAccount::where('profile_url', $profile_url)->exists());
 
+        $imagePath = null;
         if($request->hasFile('user_image')){
             $image = $request->file('user_image');
             $path = public_path($folder);
-            $imageName = time().'_'.$data['first_name'].$data['last_name'].'.'.$image->getClientOriginalExtension();
+            $imageName = time().'_'.$data['name'].'.'.$image->getClientOriginalExtension();
             $image->move($path, $imageName);
             $imagePath = $folder . '/' .$imageName;
         }
@@ -71,8 +73,7 @@ class RegisterController extends Controller
         $userAccount->user_type_id = $data['user_type_id'];
         $userAccount->email = $data['email'];
         $userAccount->user_image = $imagePath;
-        $userAccount->address = $data['address'];
-        $userAccount->password = Hash::make($data['password']);
+        $userAccount->password = bcrypt($data['password']);
         $userAccount->date_of_birth = $data['date_of_birth'];
         $userAccount->gender = $data['gender'];
         $userAccount->is_active = $data['is_active'];
@@ -83,8 +84,7 @@ class RegisterController extends Controller
 
         $jobSeeker = new SeekerProfiles();
         $jobSeeker->user_account_id = $userAccount->id;
-        $jobSeeker->first_name = $request->first_name;
-        $jobSeeker->last_name = $request->last_name;
+        $jobSeeker->name = $request->name;
         $jobSeeker->contact_email = $request->email;
         $jobSeeker->contact_phone = $request->contact_number;
         $jobSeeker->save();
@@ -97,6 +97,16 @@ class RegisterController extends Controller
     }
 
     public function employerRegistrationSubmit(Request $request){
+        $mail = UserAccount::where('email', $request->email)->first();
+        $phone = UserAccount::where('contact_number', $request->contact_number)->first();
+
+        if ($mail) {
+            return redirect()->back()->with('error', 'Email đã tồn tại!');
+        }
+
+        if ($phone) {
+            return redirect()->back()->with('error', 'Số điện thoại đã tồn tại!');
+        }
         $request->validate([
             'company_name' => 'required',
             'company_email' => 'required|email',
@@ -124,15 +134,7 @@ class RegisterController extends Controller
             $profile_url = Str::random(40);
         } while(UserAccount::where('profile_url', $profile_url)->exists());
 
-        $mail = UserAccount::findOrFail($request->email);
-        $phone = UserAccount::findOrFail($request->phone);
-        if($mail != $request->email){
-            return redirect()->back()->with('error', 'Email đã tồn tại!');
-        }
-        if($phone != $request->phone){
-            return redirect()->back()->with('error', 'SDT đã tồn tại!');
-        }
-
+        $imagePath = null;
         if($request->hasFile('company_image_url')){
             $image = $request->file('company_image_url');
             $path = public_path($folder);

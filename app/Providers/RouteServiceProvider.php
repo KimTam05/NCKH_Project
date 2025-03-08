@@ -37,4 +37,21 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
     }
+    // app/Providers/RouteServiceProvider.php
+
+    public function map()
+    {
+        $this->mapWebRoutes();  // Đảm bảo gọi hàm này để load các route trong web.php
+
+        // Các route khác như API
+        $this->mapApiRoutes();
+    }
+
+    protected function mapWebRoutes()
+    {
+        Route::middleware('web')
+            ->namespace($this->namespace) // Đảm bảo rằng namespace này đúng với controller của bạn
+            ->group(base_path('routes/web.php')); // Đảm bảo đường dẫn đúng đến file web.php
+    }
+
 }

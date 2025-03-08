@@ -13,8 +13,7 @@ class SeekerProfiles extends Model
 
     protected $fillable = [
         'user_account_id',
-        'first_name',
-        'last_name',
+        'name',
         'contact_phone',
         'contact_email',
         'file_cv',
