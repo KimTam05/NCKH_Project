@@ -84,8 +84,8 @@
                 <label for="gender">Gender:</label>
                 <select name="gender" required>
                     <option selected disabled>-- Select Gender --</option>
-                    <option value="1">Male</option>
-                    <option value="0">Female</option>
+                    <option value="0">Male</option>
+                    <option value="1">Female</option>
                 </select>
                 @error('gender')
                     <div>{{ $message }}</div>

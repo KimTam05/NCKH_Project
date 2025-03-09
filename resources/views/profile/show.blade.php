@@ -15,7 +15,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-4">
-            <p><strong>Tên:</strong> {{ $user_profile->first_name }} {{ $user_profile->last_name }}</p>
+            <p><strong>Tên:</strong> {{ $user_profile->name }}</p>
             <p><strong>Email:</strong> {{ $user_data->email }}</p>
         </div>
         <div class="col-sm-4">

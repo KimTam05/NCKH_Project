@@ -40,7 +40,7 @@ Route::get('/jobs/{id}', [JobPostController::class, 'show'])->name('jobs.show');
 // Trang hồ sơ cá nhân
 Route::get('/profile/{profile_url}', [UserAccountController::class, 'show'])->name('profile.show');
 Route::get('/profile/edit/{profile_url}', [UserAccountController::class, 'edit'])->name('profile.edit');
-Route::post('/profile/edit/{profile_url}', [UserAccountController::class, 'update'])->name('profile.update');
+Route::post('/profile/edit/{profile_url}', [UserAccountController::class, 'updateJobSeeker'])->name('profile.update');
 
 // Đăng xuất
 Route::get('/logout', function() {
