@@ -21,10 +21,11 @@ class UserAccountController extends Controller
             $date = $user_data->date_of_birth;
             $formattedDate = Carbon::parse($date)->format('d/m/Y');
             $user_data->date_of_birth = $formattedDate;
+            return view('profile.job-seeker.show', compact('user_data', 'user_profile'));
         } else {
             $user_data->user_type = 'Employer';
         }
-        return view('profile.show', compact('user_data', 'user_profile'));
+        
     }
 
     public function edit($profile_url)
@@ -32,7 +33,7 @@ class UserAccountController extends Controller
         $user_data = UserAccount::where('profile_url', $profile_url)->first();
         if(Session::get('user_type_id') == 1){
             $user_profile = SeekerProfiles::where('user_account_id', $user_data->id)->first();
-            return view('profile.job_seeker_edit', compact('user_data'), compact('user_profile'));
+            return view('profile.job_seeker.edit', compact('user_data'), compact('user_profile'));
         }
         else if(Session::get('user_type_id') == 2){
             return view('profile.employer_edit', compact('user_data'), compact('user_profile'));
@@ -75,7 +76,7 @@ class UserAccountController extends Controller
         $jobSeekerUpdate->contact_phone = $data['contact_number'];
         $jobSeekerUpdate->save();
 
-        return redirect()->route('profile.show', compact('profile_url'))->with('success', 'Sửa đỏi thành công!');
+        return redirect()->route('profile.job-seeker.show', compact('profile_url'))->with('success', 'Sửa đổi thành công!');
     }
 
 }
