@@ -1,9 +1,11 @@
 @extends('layouts.main')
 
-@section('title', 'Chỉnh sửa hồ sơ')
+@section('title', 'Thêm kinh nghiệm việc làm')
 
 @section('content')
-    <form action="" method="post">
+    <h2>Thêm kinh nghiệm việc làm</h2>
+    <form action="{{ route('profile.experienceSubmit', compact('profile_url')) }}" method="post">
+        @csrf
         <div class="mb-3">
             <label for="start-date" class="form-label">Ngày bắt đầu: </label>
             <input type="date" name="start_date" class="form-control">
@@ -12,10 +14,10 @@
             <label for="end-date" class="form-label">Ngày kết thúc:</label>
             <input type="date" name="end_date" id="" class="form-control">
         </div>
-        <div class="mb-3 form-check">
+        <div class="mb-3">
             <label for="is-current-jobs" class="form-label">Hiện tại còn làm việc không?</label>
-            <input type="radio" class="form-check-input" name="is_current_job" id=""> <label for="" class="form-check-input">Có</label>
-            <input type="radio" class="form-check-input" name="is_current_job" id=""> <label for="" class="form-check-input">Không</label>
+            <input type="radio" class="form-check-input" name="is_current_job" value="1"> <label for="" class="form-label-input">Có</label> <br>
+            <input type="radio" class="form-check-input" name="is_current_job" value="0"> <label for="" class="form-label-input">Không</label>
         </div>
         <div class="mb-3">
             <label for="job-name" class="form-label">Tên công việc:</label>
@@ -37,5 +39,10 @@
             <label for="job-location-country" class="form-label">Quốc gia nơi làm việc:</label>
             <input type="text" name="job-location-country" class="form-control">
         </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Mô tả:</label>
+            <textarea name="description" id="" class="form-control"></textarea>
+        </div>
+        <input type="submit" value="Thêm kinh nghiệm" class="btn btn-primary">
     </form>
 @endsection

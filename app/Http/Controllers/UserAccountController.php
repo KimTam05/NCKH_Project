@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\UserAccount;
 use App\Models\SeekerProfiles;
+use App\Models\Experience;
 use Carbon\Carbon;
+
 
 class UserAccountController extends Controller
 {
@@ -33,7 +35,7 @@ class UserAccountController extends Controller
         $user_data = UserAccount::where('profile_url', $profile_url)->first();
         if(Session::get('user_type_id') == 1){
             $user_profile = SeekerProfiles::where('user_account_id', $user_data->id)->first();
-            return view('profile.job_seeker.edit', compact('user_data'), compact('user_profile'));
+            return view('profile.job-seeker.edit', compact('user_data'), compact('user_profile'));
         }
         else if(Session::get('user_type_id') == 2){
             return view('profile.employer_edit', compact('user_data'), compact('user_profile'));
@@ -75,6 +77,35 @@ class UserAccountController extends Controller
         $jobSeekerUpdate->contact_email = $data['email'];
         $jobSeekerUpdate->contact_phone = $data['contact_number'];
         $jobSeekerUpdate->save();
+
+        return redirect()->route('profile.job-seeker.show', compact('profile_url'))->with('success', 'Sửa đổi thành công!');
+    }
+
+    public function experienceForm($profile_url) {
+        return view('profile.job-seeker.experience-form', compact('profile_url'));
+    }
+
+    public function experienceSubmit($profile_url, Request $request){
+        $user_data = UserAccount::where('profile_url', $profile_url)->first();
+        if (!$user_data) {
+            return redirect()->back()->with('error', 'User not found.');
+        }
+        $userID = $user_data->id;
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'is_current_job' => 'required|boolean',
+            'job_name' => 'required',
+            'company_name' => 'required',
+            'job_location_city' => 'required',
+            'job_location_state' => 'required',
+            'job_location_country' => 'required',
+            'description' => 'nullable',
+        ]);
+        $data = $request->all();
+        $data['user_account_id'] = $userID;
+        
+        Experience::create($data);
 
         return redirect()->route('profile.job-seeker.show', compact('profile_url'))->with('success', 'Sửa đổi thành công!');
     }

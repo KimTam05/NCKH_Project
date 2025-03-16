@@ -39,7 +39,7 @@
         <a href="{{ route('profile.show', ['profile_url' => $user_data->profile_url]) }}" class="btn btn-secondary"> Trở lại </a>
     </div>
     <div class="mb-3">
-        <a href="#" class="btn btn-success">Thêm kinh nghiệm việc làm</a>
+        <a href="{{ route('profile.experience', ['profile_url' => $user_data->profile_url]) }}" class="btn btn-success">Thêm kinh nghiệm việc làm</a>
         <a href="#" class="btn btn-warning">Thêm bằng cấp</a>
     </div>
     <div class="mb-3">

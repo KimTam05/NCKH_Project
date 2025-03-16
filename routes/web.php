@@ -41,6 +41,8 @@ Route::get('/jobs/{id}', [JobPostController::class, 'show'])->name('jobs.show');
 Route::get('/profile/{profile_url}', [UserAccountController::class, 'show'])->name('profile.show');
 Route::get('/profile/edit/{profile_url}', [UserAccountController::class, 'edit'])->name('profile.edit');
 Route::post('/profile/edit/{profile_url}', [UserAccountController::class, 'updateJobSeeker'])->name('profile.update');
+Route::get('profile/experience/{profile_url}', [UserAccountController::class, 'experienceForm'])->name('profile.experience');
+Route::post('profile/experience/{profile_url}', [UserAccountController::class, 'experienceSubmit'])->name('profile.experienceSubmit');
 
 // Đăng xuất
 Route::get('/logout', function() {
