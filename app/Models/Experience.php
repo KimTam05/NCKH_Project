@@ -14,4 +14,9 @@ class Experience extends Model
     protected $fillable = ['user_account_id', 'start_date', 'end_date', 'is_current_job', 'job_name', 'company_name', 'job_location_city', 'job_location_state', 'job_location_country', 'description'];
 
     public $timestamps = false;
+
+    public function userAccount()
+    {
+        return $this->belongsTo(SeekerProfiles::class, 'user_account_id');
+    }
 }

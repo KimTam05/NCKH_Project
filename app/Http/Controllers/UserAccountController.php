@@ -20,10 +20,11 @@ class UserAccountController extends Controller
         if ($user_data_type == 1) {
             $user_data->user_type = 'Job Seeker';
             $user_profile = SeekerProfiles::where('user_account_id', $userID)->first();
+            $exp = Experience::where('user_account_id', $userID)->get();
             $date = $user_data->date_of_birth;
             $formattedDate = Carbon::parse($date)->format('d/m/Y');
             $user_data->date_of_birth = $formattedDate;
-            return view('profile.job-seeker.show', compact('user_data', 'user_profile'));
+            return view('profile.job-seeker.show', compact('user_data', 'user_profile', 'exp'));
         } else {
             $user_data->user_type = 'Employer';
         }
@@ -94,7 +95,7 @@ class UserAccountController extends Controller
         $request->validate([
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'is_current_job' => 'required|boolean',
+            'is_current_job' => 'required|in:1,0',
             'job_name' => 'required',
             'company_name' => 'required',
             'job_location_city' => 'required',
@@ -102,12 +103,23 @@ class UserAccountController extends Controller
             'job_location_country' => 'required',
             'description' => 'nullable',
         ]);
-        $data = $request->all();
+        
+        $data = $request->except('_token');
         $data['user_account_id'] = $userID;
         
-        Experience::create($data);
-
-        return redirect()->route('profile.job-seeker.show', compact('profile_url'))->with('success', 'Sửa đổi thành công!');
+        $exp = new Experience();
+        $exp['user_account_id'] = $userID;
+        $exp['start_date'] = $data['start_date'];
+        $exp['end_date'] = $data['end_date'];
+        $exp['job_name'] = $data['job_name'];
+        $exp['company_name'] = $data['company_name'];
+        $exp['is_current_job'] = $data['is_current_job'];
+        $exp['job_location_city'] = $data['job_location_city'];
+        $exp['job_location_state'] = $data['job_location_state'];
+        $exp['job_location_country'] = $data['job_location_country'];
+        $exp['description'] = $data['description'];
+        $exp->save();
+        return redirect()->route('profile.show', compact('profile_url'))->with('success', 'Sửa đổi thành công!');
     }
 
 }
