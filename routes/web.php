@@ -52,3 +52,12 @@ Route::get('/logout', function() {
 
 Route::resource('jobs', JobController::class);
 Route::resource('candidates', CandidateController::class);
+
+
+use App\Http\Controllers\ExperienceController;
+use App\Http\Controllers\EducationController;
+
+Route::middleware('auth')->group(function () {
+    Route::post('/experience', [ExperienceController::class, 'store'])->name('experience.store');
+    Route::post('/education', [EducationController::class, 'store'])->name('education.store');
+});
