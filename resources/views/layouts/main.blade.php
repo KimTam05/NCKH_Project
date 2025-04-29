@@ -25,14 +25,14 @@
 </head>
 
 <body class="container-fluid">
-    <div class="row mb-3">
+    <div class="row mb-3 opacity-75">
         <nav class="navbar navbar-white bg-light shadow-sm">
             <a href="{{ route('jobs.index') }}" class="navbar-brand ms-2">
                 <h3 class="text-warning">Recr.</h3>
             </a>
         </nav>
     </div>
-    <div class="container-fluid main">
+    <div class="container-fluid main opacity-75">
         <div class="row">
             <div class="col-sm-2 bg-white rounded-2">
                 <ul class="menu">

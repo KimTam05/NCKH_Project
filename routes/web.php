@@ -43,6 +43,8 @@ Route::get('/profile/edit/{profile_url}', [UserAccountController::class, 'edit']
 Route::post('/profile/edit/{profile_url}', [UserAccountController::class, 'updateJobSeeker'])->name('profile.update');
 Route::get('profile/experience/{profile_url}', [UserAccountController::class, 'experienceForm'])->name('profile.experience');
 Route::post('profile/experience/{profile_url}', [UserAccountController::class, 'experienceSubmit'])->name('profile.experienceSubmit');
+Route::get('profile/education/{profile_url}', [UserAccountController::class, 'educationForm'])->name('profile.education');
+Route::post('profile/education/{profile_url}', [UserAccountController::class, 'educationSubmit'])->name('profile.educationSubmit');
 
 // Đăng xuất
 Route::get('/logout', function() {
@@ -52,12 +54,3 @@ Route::get('/logout', function() {
 
 Route::resource('jobs', JobController::class);
 Route::resource('candidates', CandidateController::class);
-
-
-use App\Http\Controllers\ExperienceController;
-use App\Http\Controllers\EducationController;
-
-Route::middleware('auth')->group(function () {
-    Route::post('/experience', [ExperienceController::class, 'store'])->name('experience.store');
-    Route::post('/education', [EducationController::class, 'store'])->name('education.store');
-});

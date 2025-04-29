@@ -8,6 +8,7 @@ use App\Models\UserAccount;
 use App\Models\SeekerProfiles;
 use App\Models\Experience;
 use Carbon\Carbon;
+use App\Models\Education;
 
 
 class UserAccountController extends Controller
@@ -21,10 +22,11 @@ class UserAccountController extends Controller
             $user_data->user_type = 'Job Seeker';
             $user_profile = SeekerProfiles::where('user_account_id', $userID)->first();
             $exp = Experience::where('user_account_id', $userID)->get();
+            $education = Education::where('user_account_id', $userID)->get();
             $date = $user_data->date_of_birth;
             $formattedDate = Carbon::parse($date)->format('d/m/Y');
             $user_data->date_of_birth = $formattedDate;
-            return view('profile.job-seeker.show', compact('user_data', 'user_profile', 'exp'));
+            return view('profile.job-seeker.show', compact('user_data', 'user_profile', 'exp', 'education'));
         } else {
             $user_data->user_type = 'Employer';
         }
@@ -119,6 +121,40 @@ class UserAccountController extends Controller
         $exp['job_location_country'] = $data['job_location_country'];
         $exp['description'] = $data['description'];
         $exp->save();
+        return redirect()->route('profile.show', compact('profile_url'))->with('success', 'Sửa đổi thành công!');
+    }
+
+    public function educationForm($profile_url) {
+        return view('profile.job-seeker.education-form', compact('profile_url'));
+    }
+
+    public function educationSubmit($profile_url, Request $request){
+        $user_data = UserAccount::where('profile_url', $profile_url)->first();
+        if(!$user_data) {
+            return redirect()->back()->with('error', 'User not found.');
+        }
+        $userID = $user_data->id;
+        $request->validate([
+            'certificate_degree_name' => 'required',
+            'major' => 'required',
+            'insitute_university_name' => 'required',
+            'starting_date' => 'required|date',
+            'completion_date' => 'required|date|after_or_equal:start_date',
+            'percentage' => 'required',
+            'cgpa' => 'required',
+        ]);
+        $data = $request->except('_token');
+        $data['user_account_id'] = $userID;
+        $education = new Education();
+        $education['user_account_id'] = $userID;
+        $education['certificate_degree_name'] = $data['certificate_degree_name'];
+        $education['major'] = $data['major'];
+        $education['insitute_university_name'] = $data['insitute_university_name'];
+        $education['starting_date'] = $data['starting_date'];
+        $education['completion_date'] = $data['completion_date'];
+        $education['percentage'] = $data['percentage'];
+        $education['cgpa'] = $data['cgpa'];
+        $education->save();
         return redirect()->route('profile.show', compact('profile_url'))->with('success', 'Sửa đổi thành công!');
     }
 

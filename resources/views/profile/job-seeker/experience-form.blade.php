@@ -35,10 +35,9 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Hiện tại còn làm việc không?</label><br>
+            <label class="form-label">Hiện tại còn làm việc không?</label>
             <input type="radio" id="is_current_job_yes" class="form-check-input" name="is_current_job" value="1" {{ old('is_current_job') == '1' ? 'checked' : '' }}>
             <label for="is_current_job_yes" class="form-label-input">Có</label><br>
-
             <input type="radio" id="is_current_job_no" class="form-check-input" name="is_current_job" value="0" {{ old('is_current_job') == '0' ? 'checked' : '' }}>
             <label for="is_current_job_no" class="form-label-input">Không</label>
             @error('is_current_job')
@@ -95,5 +94,6 @@
         </div>
 
         <input type="submit" value="Thêm kinh nghiệm" class="btn btn-primary">
+        
     </form>
 @endsection

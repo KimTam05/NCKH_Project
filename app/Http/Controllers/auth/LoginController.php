@@ -26,7 +26,6 @@ class LoginController extends Controller
         $user_account = UserAccount::where('email', $request->email)->first();
 
         if (!$user_account || !Hash::check($data['password'], $user_account->password)) {
-            dd($data);
             return redirect()->back()->with('error', 'Tài khoản hoặc mật khẩu không đúng!');
         }
         elseif ($user_account->is_active != 1) {
