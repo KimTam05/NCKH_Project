@@ -52,6 +52,7 @@ Route::post('/profile/company/edit/{profile_url}', [UserAccountController::class
 Route::get('/profile/company/image/{profile_url}', [UserAccountController::class, 'companyImage'])->name('profile.company.image');
 Route::post('/profile/company/image/{profile_url}', [UserAccountController::class, 'companyImageSubmit'])->name('profile.company.image.submit');
 
+Route::get('/jobs/dashboard/{profile_url}', [JobPostController::class, 'dashboard'])->name('employer.dashboard');
 
 // Đăng xuất
 Route::get('/logout', function() {

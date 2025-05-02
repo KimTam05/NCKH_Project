@@ -14,11 +14,11 @@ class UserTypeSeeder extends Seeder
     public function run(): void
     {
         UserType::create([
-            'user_type_name' => 'Nhà tuyển dụng',
+            'user_type_name' => 'Người kiếm việc',
         ]);
 
         UserType::create([
-            'user_type_name' => 'Người kiếm việc',
+            'user_type_name' => 'Nhà tuyển dụng',
         ]);
     }
 }
