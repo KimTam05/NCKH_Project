@@ -46,6 +46,13 @@ Route::post('profile/experience/{profile_url}', [UserAccountController::class, '
 Route::get('profile/education/{profile_url}', [UserAccountController::class, 'educationForm'])->name('profile.education');
 Route::post('profile/education/{profile_url}', [UserAccountController::class, 'educationSubmit'])->name('profile.educationSubmit');
 
+Route::get('/profile/company/{profile_url}', [UserAccountController::class, 'showCompany'])->name('profile.company');
+Route::get('/profile/company/edit/{profile_url}', [UserAccountController::class, 'editCompany'])->name('profile.company.edit');
+Route::post('/profile/company/edit/{profile_url}', [UserAccountController::class, 'updateCompany'])->name('profile.company.update');
+Route::get('/profile/company/image/{profile_url}', [UserAccountController::class, 'companyImage'])->name('profile.company.image');
+Route::post('/profile/company/image/{profile_url}', [UserAccountController::class, 'companyImageSubmit'])->name('profile.company.image.submit');
+
+
 // Đăng xuất
 Route::get('/logout', function() {
     // API đăng xuất

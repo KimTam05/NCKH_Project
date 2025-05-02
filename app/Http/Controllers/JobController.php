@@ -10,16 +10,26 @@ class JobController extends Controller
     public function index()
     {
         $jobs = JobPost::all();
-        return view('jobs.index', compact('jobs'));
+        $user_type = session('user_type_id');
+        return view('jobs.index', compact('jobs', 'user_type'));
     }
 
     public function create()
     {
-        return view('jobs.create');
+        $user_type = session('user_type_id');
+        if ($user_type != 2) {
+            return redirect()->route('jobs.index')->with('error', 'Bạn không có quyền đăng tin tuyển dụng.');
+        }
+        return view('jobs.create', compact('user_type'));
     }
 
     public function store(Request $request)
     {
+        $user_type = session('user_type_id');
+        if ($user_type != 2) {
+            return redirect()->route('jobs.index')->with('error', 'Bạn không có quyền đăng tin tuyển dụng.');
+        }
+
         $request->validate([
             'title' => 'required',
             'description' => 'required',
@@ -38,12 +48,13 @@ class JobController extends Controller
         $job->file_description = $request->file->store('files');
         $job->save();
 
-        return redirect()->route('jobs.index');
+        return redirect()->route('jobs.index')->with('success', 'Đăng tin tuyển dụng thành công!');
     }
 
     public function show($id)
     {
         $job = JobPost::findOrFail($id);
-        return view('jobs.show', compact('job'));
+        $user_type = session('user_type_id');
+        return view('jobs.show', compact('job', 'user_type'));
     }
 }

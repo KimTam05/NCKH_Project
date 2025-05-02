@@ -9,6 +9,8 @@ use App\Models\SeekerProfiles;
 use App\Models\Experience;
 use Carbon\Carbon;
 use App\Models\Education;
+use App\Models\Company;
+use App\Models\Company_image;
 
 
 class UserAccountController extends Controller
@@ -26,11 +28,19 @@ class UserAccountController extends Controller
             $date = $user_data->date_of_birth;
             $formattedDate = Carbon::parse($date)->format('d/m/Y');
             $user_data->date_of_birth = $formattedDate;
+            session(['user_type_id' => 1]);
             return view('profile.job-seeker.show', compact('user_data', 'user_profile', 'exp', 'education'));
         } else {
             $user_data->user_type = 'Employer';
+            $user_profile = Company::where('id', $userID)->first();
+            $company_image = Company_image::where('company_id', $user_profile->id)->first();
+            $user_profile->company_logo = $company_image->company_image_url;
+            $date = $user_profile->establishment_date;
+            $formattedDate = Carbon::parse($date)->format('d/m/Y');
+            $user_profile->establishment_date = $formattedDate;
+            session(['user_type_id' => 2]);
+            return view('profile.employer.show', compact('user_data', 'user_profile'));
         }
-        
     }
 
     public function edit($profile_url)
@@ -156,6 +166,69 @@ class UserAccountController extends Controller
         $education['cgpa'] = $data['cgpa'];
         $education->save();
         return redirect()->route('profile.show', compact('profile_url'))->with('success', 'Sửa đổi thành công!');
+    }
+
+    # Edit Company Profile
+    public function editCompany($profile_url)
+    {
+        $user_data = UserAccount::where('profile_url', $profile_url)->first();
+        $user_profile = Company::where('id', $user_data->id)->first();
+        return view('profile.employer.edit', compact('user_data'), compact('user_profile'));
+    }
+
+    public function updateCompany(Request $request, $profile_url){
+        $request->validate([
+            'company_name' => 'required',
+            'company_email' => 'required|email',
+            'contact_number' =>'required',
+            'company_image' => 'image',
+            'company_website_url' => 'required',
+            'profile_description' => 'nullable',
+            'establishment_date' => 'required',
+        ]);
+        $userAccount = UserAccount::where('profile_url', $profile_url)->first();
+        $data = $request->except('_token');
+        $folder = 'uploads/company';
+        $imagePath = $userAccount->user_image;
+        if($request->hasFile('company_image')){
+            $image = $request->file('company_image');
+            $path = public_path($folder);
+            $imageName = time().'_'.$data('name').'.'.$image->getClientOriginalExtension();
+            $image->move($path, $imageName);
+            $imagePath = $folder.'/'.$imageName;
+        }
+        
+        $userAccount->user_type_id = 2;
+        $userAccount->email = $data['company_email'];
+        $userAccount->contact_number = $data['contact_number'];
+        $userAccount->user_image = $imagePath;
+        $userAccount->profile_url = $profile_url;
+        $userAccount->save();
+
+        # Update Company Profile
+        $companyUpdate = Company::where('id', $userAccount->id)->first();
+        $company_image = Company_image::where('company_id', $companyUpdate->id)->first();
+        if($request->hasFile('company_image')){
+            $image = $request->file('company_image');
+            $path = public_path($folder);
+            $imageName = time().'_'.$data['company_name'].'.'.$image->getClientOriginalExtension();
+            $image->move($image, $imageName);
+            $company_image->company_image_url = $folder.'/'.$imageName;
+            $company_image->save();
+        }
+        if ($companyUpdate) {
+            $companyUpdate->company_name = $data['company_name'];
+            $companyUpdate->company_email = $data['company_email'];
+            $companyUpdate->establishment_date = $data['establishment_date'];
+            $companyUpdate->company_website_url = $data['company_website_url'];
+            $companyUpdate->profile_description = $data['profile_description'];
+            $companyUpdate->contact_number = $data['contact_number'];
+            $companyUpdate->save();
+            return redirect()->route('profile.company.show', compact('profile_url'))->with('success', 'Sửa đổi thành công!');
+        }
+        else {
+            return redirect()->back()->with('error', 'Công ty không tồn tại.');
+        }
     }
 
 }

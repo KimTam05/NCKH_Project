@@ -37,6 +37,16 @@
             <div class="col-sm-2 bg-white rounded-2">
                 <ul class="menu">
                     <li><a href="{{ route('jobs.index') }}">Việc làm</a></li>
+                    @if (session()->get('user_type_id') == 2) <!-- Người tìm việc -->
+                        <li><a href="{{ route('profile.show', ['profile_url' => session()->get('profile_url')]) }}">Hồ sơ cá nhân</a></li>
+                        <li><a href="{{ route('profile.edit', ['profile_url' => session()->get('profile_url')]) }}">Chỉnh sửa hồ sơ</a></li>
+                        <li><a href="{{ route('profile.experience', ['profile_url' => session()->get('profile_url')]) }}">Kinh nghiệm làm việc</a></li>
+                        <li><a href="{{ route('profile.education', ['profile_url' => session()->get('profile_url')]) }}">Học vấn</a></li>
+                        
+                    @elseif (session()->get('user_type_id') == 1) <!-- Nhà tuyển dụng -->
+                        <li><a href="{{ route('employer.dashboard') }}">Quản lý tuyển dụng</a></li>
+                        <li><a href="{{ route('employer.postJob') }}">Đăng tin tuyển dụng</a></li>
+                    @endif
                     @if (session()->has('profile_url'))
                         <li><a href="{{ route('profile.show', ['profile_url' => session()->get('profile_url')])}}">Tài khoản</a></li>
                         <li>
@@ -51,7 +61,6 @@
                         <li><a href="{{ route('login') }}">Đăng nhập</a></li>
                         <li><a href="{{ route('user_type') }}">Đăng ký</a></li>
                     @endif
-
                 </ul>
             </div>
             <div class="col-sm-10">
