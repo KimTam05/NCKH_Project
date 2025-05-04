@@ -44,6 +44,38 @@ class LoginController extends Controller
         }
     }
 
+    public function changePassword(Request $request, $profile_url)
+    {
+        $user_account = UserAccount::where('profile_url', $profile_url)->first();
+        if (!$user_account) {
+            return redirect()->back()->with('error', 'Tài khoản không tồn tại!');
+        }
+        return view('auth.change-password', compact('user_account'));
+    }
+    public function updatePassword(Request $request, $profile_url)
+    {
+        $user_account = UserAccount::where('profile_url', $profile_url)->first();
+        if (!$user_account) {
+            return redirect()->back()->with('error', 'Tài khoản không tồn tại!');
+        }
+
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|string|min:8|confirmed',
+            'new_password_confirmation' => 'required|same:new_password',
+        ]);
+
+        if (!Hash::check($request->current_password, $user_account->password)) {
+            return redirect()->back()->with('error', 'Mật khẩu cũ không đúng!');
+        }
+
+        $user_account->password = Hash::make($request->new_password);
+        $user_account->save();
+
+        session()->flush();
+        return redirect()->route('login')->with('success', 'Đổi mật khẩu thành công!');
+    }
+
     public function logout()
     {
         session()->flush();

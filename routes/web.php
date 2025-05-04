@@ -31,6 +31,8 @@ Route::post('/user_type/employer', [RegisterController::class, 'employerRegistra
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
+Route::get('/change-password/{profile_url}', [UserAccountController::class, 'changePassword'])->name('password.change');
+Route::post('/change-password/{profile_url}', [UserAccountController::class, 'updatePassword'])->name('password.update');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Trang danh sách việc làm
@@ -53,6 +55,11 @@ Route::get('/profile/company/image/{profile_url}', [UserAccountController::class
 Route::post('/profile/company/image/{profile_url}', [UserAccountController::class, 'companyImageSubmit'])->name('profile.company.image.submit');
 
 Route::get('/jobs/dashboard/{profile_url}', [JobPostController::class, 'dashboard'])->name('employer.dashboard');
+Route::get('/jobs/create/{profile_url}', [JobPostController::class, 'create'])->name('jobs.create');
+Route::post('/jobs/store/{profile_url}', [JobPostController::class, 'store'])->name('jobs.store');
+Route::get('/jobs/edit/{profile_url}/{job_id}', [JobPostController::class, 'edit'])->name('jobs.edit');
+Route::post('/jobs/update/{profile_url}/{job_id}', [JobPostController::class, 'update'])->name('jobs.update');
+Route::get('/jobs/delete/{profile_url}/{job_id}', [JobPostController::class, 'destroy'])->name('jobs.delete');
 
 // Đăng xuất
 Route::get('/logout', function() {

@@ -22,25 +22,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($jobs as $job)
+                    @forelse ($job as $item)
+                        {{-- Show job post --}}
                         <tr>
-                            <td>{{ $job->id }}</td>
-                            <td>{{ $job->job_title }}</td>
-                            <td>{{ $job->location }}</td>
-                            <td>{{ $job->created_at->format('d/m/Y') }}</td>
-                            <td>{{ $job->date_expired->format('d/m/Y') }}</td>
-                            <td>${{ $job->salary }}</td>
-                            <td>{{ $job->is__active }}</td>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $item->job_title }}</td>
+                            <td>{{ $item->location }}</td>
+                            <td>{{ $item->created_at->format('d/m/Y') }}</td>
+                            <td>{{ $item->date_expired->format('d/m/Y') }}</td>
+                            <td>{{ number_format($item->salary, 0, ',', '.') }} VNĐ</td>
                             <td>
-                                <a href="{{ route('jobs.edit', $job->id) }}" class="btn btn-primary">Chỉnh sửa</a>
-                                <form action="{{ route('jobs.destroy', $job->id) }}" method="POST" style="display:inline;">
+                                @if ($item->is__active == 1)
+                                    Đang tuyển
+                                @else
+                                    Ngừng tuyển
+                                @endif
+                            </td>
+                            <td>
+                                <a href="{{ route('employer.edit', $item->id) }}" class="btn btn-warning">Chỉnh sửa</a>
+                                <form action="{{ route('employer.destroy', $item->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Xóa</button>
                                 </form>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center">Chưa có việc làm nào được đăng</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
 

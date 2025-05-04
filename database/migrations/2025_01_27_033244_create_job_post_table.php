@@ -15,20 +15,17 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('post_by_id');
             $table->unsignedBigInteger('job_type_id');
+            $table->string('job_title');
+            $table->text('job_location');
             $table->date('created_at');
             $table->text('description');
-            $table->unsignedBigInteger('job_location_id');
             $table->boolean('is_active');
-            $table->string('job_title');
             $table->date('date_expired');
-            $table->date('date_receiving_applications');
             $table->float('salary');
-            $table->unsignedBigInteger('category_id');
-            $table->string('file_description');
+            $table->integer('number_of_cv')->default(0);
+            $table->string('job_url')->unique();
             $table->foreign('job_type_id')->references('id')->on('job_type');
-            $table->foreign('category_id')->references('id')->on('category');
-            $table->foreign('job_location_id')->references('id')->on('job_location');
-            $table->foreign('post_by_id')->references('id')->on('user_account');
+            $table->foreign('post_by_id')->references('id')->on('company');
         });
     }
 
