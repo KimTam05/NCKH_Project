@@ -62,3 +62,9 @@ Route::get('/logout', function() {
 
 Route::resource('jobs', JobController::class);
 Route::resource('candidates', CandidateController::class);
+
+
+use App\Http\Controllers\CVController;
+
+Route::get('cv/add', [CVController::class, 'create'])->name('cv.create');
+Route::post('cv/store', [CVController::class, 'store'])->name('cv.store');
