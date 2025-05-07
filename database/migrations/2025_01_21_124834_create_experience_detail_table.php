@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('experience_detail', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_account_id')->primary();
+            $table->id();
+            $table->unsignedBigInteger('user_account_id');
             $table->date('start_date');
             $table->date('end_date');
             $table->boolean('is_current_job');

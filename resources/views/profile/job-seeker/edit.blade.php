@@ -5,15 +5,11 @@
 @section('content')
 <h2>Chỉnh sửa hồ sơ</h2>
 
-<form action="{{ route('profile.update', $user_data->id) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('profile.update', $user_data->profile_url) }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="form-group mb-3">
-        <label for="first_name">First Name:</label>
-        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ $user_profile->first_name }}" required>
-    </div>
-    <div class="form-group mb-3">
-        <label for="last_name">Last Name:</label>
-        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ $user_profile->last_name }}" required>
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" name="name" value="{{ $user_profile->name }}" required>
     </div>
     <div class="form-group mb-3">
         <label for="email">Email:</label>
@@ -26,8 +22,8 @@
     <div class="form-group mb-3">
         <label for="gender">Giới tính:</label>
         <select class="form-control" id="gender" name="gender" required>
-            <option value="0" {{ $user_profile->gender == 0 ? 'selected' : '' }}>Nam</option>
-            <option value="1" {{ $user_profile->gender == 1 ? 'selected' : '' }}>Nữ</option>
+            <option value="0" {{ $user_data->gender == 0 ? 'selected' : '' }}>Nam</option>
+            <option value="1" {{ $user_data->gender == 1 ? 'selected' : '' }}>Nữ</option>
         </select>
     </div>
     <div class="form-group mb-3">
@@ -38,7 +34,12 @@
         <label for="user_image">Ảnh đại diện:</label>
         <input type="file" class="form-control" id="user_image" name="user_image">
     </div>
-    <button type="submit" class="btn btn-primary">Cập nhật</button>
-
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+        <a href="{{ route('profile.show', ['profile_url' => $user_data->profile_url]) }}" class="btn btn-secondary"> Trở lại </a>
+    </div>
+    <div class="mb-3">
+        <a href="#" class="btn btn-info">Đổi mật khẩu</a>
+    </div>
 </form>
 @endsection

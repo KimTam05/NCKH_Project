@@ -12,7 +12,7 @@ class UserAccount extends Model
     protected $table = 'user_account';
 
     protected $fillable = [
-        'name', 'email', 'password', 'date_of_birth', 'gender', 'contact_number', 'address', 'user_image', 'profile_url'
+        'name', 'email', 'password', 'date_of_birth', 'gender', 'contact_number', 'user_image', 'profile_url'
     ];
     protected $hidden = [
         'password'

@@ -25,18 +25,28 @@
 </head>
 
 <body class="container-fluid">
-    <div class="row mb-3">
+    <div class="row mb-3 opacity-75">
         <nav class="navbar navbar-white bg-light shadow-sm">
             <a href="{{ route('jobs.index') }}" class="navbar-brand ms-2">
                 <h3 class="text-warning">Recr.</h3>
             </a>
         </nav>
     </div>
-    <div class="container-fluid main">
+    <div class="container-fluid main opacity-75">
         <div class="row">
             <div class="col-sm-2 bg-white rounded-2">
                 <ul class="menu">
                     <li><a href="{{ route('jobs.index') }}">Việc làm</a></li>
+                    @if (session()->get('user_type_id') == 1) <!-- Người tìm việc -->
+                        <li><a href="{{ route('profile.show', ['profile_url' => session()->get('profile_url')]) }}">Hồ sơ cá nhân</a></li>
+                        <li><a href="{{ route('profile.edit', ['profile_url' => session()->get('profile_url')]) }}">Chỉnh sửa hồ sơ</a></li>
+                        <li><a href="{{ route('profile.experience', ['profile_url' => session()->get('profile_url')]) }}">Kinh nghiệm làm việc</a></li>
+                        <li><a href="{{ route('profile.education', ['profile_url' => session()->get('profile_url')]) }}">Học vấn</a></li>
+                        
+                    @elseif (session()->get('user_type_id') == 2) <!-- Nhà tuyển dụng -->
+                        <li><a href="{{ route('employer.dashboard', ['profile_url' => session()->get('profile_url')]) }}">Quản lý tuyển dụng</a></li>
+                        {{-- <li><a href="{{ route('employer.postJob') }}">Đăng tin tuyển dụng</a></li> --}}
+                    @endif
                     @if (session()->has('profile_url'))
                         <li><a href="{{ route('profile.show', ['profile_url' => session()->get('profile_url')])}}">Tài khoản</a></li>
                         <li>
@@ -51,7 +61,6 @@
                         <li><a href="{{ route('login') }}">Đăng nhập</a></li>
                         <li><a href="{{ route('user_type') }}">Đăng ký</a></li>
                     @endif
-
                 </ul>
             </div>
             <div class="col-sm-10">

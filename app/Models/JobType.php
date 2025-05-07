@@ -16,6 +16,8 @@ class JobType extends Model
         'job_type'
     ];
 
+    public $timestamps = false;
+
     public function jobPosts()
     {
         return $this->hasMany(JobPost::class, 'job_type_id');

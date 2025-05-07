@@ -23,7 +23,7 @@
                 <label for="company-logo">Company Logo:</label>
                 <input type="file" name="company_image_url" required>
                 @error('company_image_url')
-                    <div>{{ $message }}</div>
+                    <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
             </div>
             <div class="form-group">

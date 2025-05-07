@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('education_detail', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_account_id')->primary();
+            $table->id();
+            $table->unsignedBigInteger('user_account_id');
             $table->string('certificate_degree_name', 50);
             $table->string('major', 50);
             $table->string('insitute_university_name', 50);

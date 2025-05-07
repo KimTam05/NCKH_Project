@@ -13,16 +13,12 @@
     </style>
 </head>
 <body>
-    <form action="{{ route('login') }}" method="POST">
+    <form action="" method="POST">
         @csrf
         <label for="email">Email:</label>
         <input type="email" name="email" required>
         <label for="password">Mật khẩu:</label>
         <input type="password" name="password" required>
-        @error('account')
-            <div class="error">{{ $message }}</div>
-        @enderror
-
         <button type="submit">Đăng nhập</button>
     </form>
     <p style="color: white;">Chưa có tài khoản? <a href="{{ route('user_type') }}">Đăng ký</a></p>
@@ -37,11 +33,11 @@
             });
         </script>
     @endif
-    @if (session('account'))
+    @if (session('error'))
         <script>
             Swal.fire({
                 title: 'Thất bại!',
-                text: '{{ session('account') }}',
+                text: '{{ session('error') }}',
                 icon: 'error',
                 confirmButtonText: 'OK'
             });
